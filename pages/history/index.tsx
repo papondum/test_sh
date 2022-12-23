@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Image from 'next/image'
 import Modal from '../../components/Modal'
 import Navigate from '../../components/Navigation'
 import { db } from '../../components/Firebase'
 import { ref, get, child } from "firebase/database";
 import { getImgUrl } from '../api/storage';
+import { setEnvironmentData } from 'worker_threads'
 function toDateTime(secs:number) {
     const date = secs/1000
     // const output = new Date(secs * 1000);
@@ -14,19 +15,26 @@ function toDateTime(secs:number) {
 }
 
 interface HistoryData {
-    
         date: number;
         lat:number;
         lng:number;
         url?: string;
         name: string;
-}
+}[]
+export default function History() {
+    const [data, setData] = useState<any|null>(null)
 
-interface HistoryDatas {
-    data: HistoryData[];
-}
-export default function History(props:HistoryDatas) {
-    const { data } = props
+    useEffect(()=> {
+    const fetchData = async () => {
+        const _data = await getCheckinData();
+        setData(_data)
+        }
+        fetchData()
+        .catch(console.error);
+    }, [])
+    console.log(data);
+    
+    // const { data } = props
     const [popup, setPopup] = useState(false)
     const [selected, setSelected] = useState<HistoryData>()
     function clickView(item:HistoryData) {
@@ -39,7 +47,7 @@ export default function History(props:HistoryDatas) {
         <section className="container mx-auto p-4">
             <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">History checkin</h1>
             <div className="grid grid-cols-2 gap-4">
-                {data.map(item => (
+                {data&&(data.map((item: HistoryData) => (
                 <div onClick={()=>clickView(item)} key={item.date} className="flex flex-col gap-3 justify-center items-center block justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     {item.url&&<img
                         alt={item.name}
@@ -52,7 +60,7 @@ export default function History(props:HistoryDatas) {
                         }}
                     />}
                     <span>Date: {toDateTime(item.date).toLocaleString()}</span>
-                </div>))}
+                </div>)))}
             </div>
         </section>
         {popup&&(<Modal onOk={()=>setPopup(false)}>
@@ -75,7 +83,7 @@ export default function History(props:HistoryDatas) {
     </main>)
 }
 
-export async function getStaticProps() {
+async function getCheckinData() {
     const dbRef = ref(db);
     const _data = await get(child(dbRef, `checkin/`))
     const dataJson = _data.toJSON()||{}
@@ -94,9 +102,5 @@ export async function getStaticProps() {
             console.log(e);
         }
       }));
-    return {
-      props: {
-        data
-      },
-    }
+    return data
   }
