@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+For demo https://checkin-8a7cd.firebaseapp.com/
+
 First, run the development server:
 
 ```bash
@@ -10,25 +12,37 @@ npm run dev
 yarn dev
 ```
 
+# still unstable version
+
+    !! Have to keep refresh while map not loaded !!
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Prerequisite
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- firebase account, google account
+- api keys,
+- firebase keys config
+- node version 17+
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+# Navigation
 
-## Learn More
+- / for home checkin
+- /history for history of checkin
+- /setting for setting markers
 
-To learn more about Next.js, take a look at the following resources:
+# Library & Technologies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Firebase, storage (store img), realtimedb (store markers, user radius, history checkin)
+- tailwindcss for theme ui
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# Rooms of improve
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- handle api error each request
+- responsive for mobile
+- UI
+- performance map on load
+- coding arrage directory
+- eslint, prettier (set more rules)
+- (can use scipt auto deploy, unit test)
+- ENV key
