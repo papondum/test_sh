@@ -8,8 +8,19 @@ import { ref, set, onValue, get, child } from "firebase/database";
 import useLocationHook from '../hooks'
 import { useEffect, useState } from 'react'
 
-export default function Home({data, rad}:MapData) {  
+export default function Home() {  
   const location = useLocationHook()
+  const [_data, setData] = useState<any|null>({data:null, rad:null})
+
+  useEffect(()=> {
+  const fetchData = async () => {
+      const response = await getHomeData();
+      setData(response)
+      }
+      fetchData()
+      .catch(console.error);
+  }, [])
+  const {data, rad} = _data
   return (
     <>
       <Head>
@@ -29,15 +40,11 @@ export default function Home({data, rad}:MapData) {
   )
 }
 
-export async function getStaticProps() {
+async function getHomeData() {
   const dbRef = ref(db);
   const _data = await get(child(dbRef, `mark/`))
   const _rad = await get(child(dbRef, `rad/`))
   const data = await _data.toJSON()
   const rad = await _rad.toJSON()
-  return {
-    props: {
-      data,rad
-    },
-  }
+  return { data,rad}
 }

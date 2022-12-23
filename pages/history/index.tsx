@@ -26,13 +26,12 @@ export default function History() {
 
     useEffect(()=> {
     const fetchData = async () => {
-        const _data = await getCheckinData();
-        setData(_data)
+        const response = await getCheckinData();
+        setData(response)
         }
         fetchData()
         .catch(console.error);
     }, [])
-    console.log(data);
     
     // const { data } = props
     const [popup, setPopup] = useState(false)

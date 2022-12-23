@@ -35,7 +35,7 @@ function Map({setValue, data, rad, current}:MapData) {
   
   return (
     <GoogleMapsProvider
-      googleMapsAPIKey={'AIzaSyAqrku_7tQuF9Jot_sX4CfzFbD8Pm3okJU'}
+      googleMapsAPIKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY||'AIzaSyAqrku_7tQuF9Jot_sX4CfzFbD8Pm3okJU'}
       mapContainer={mapContainer}
       mapOptions={mapOptions}
       >

@@ -9,14 +9,27 @@ import { saveMarker, saveRadius } from '../api/request'
 import useLocationHook from '../../hooks'
 import Confirm from '../../components/Confirm'
 
-const Setting= (props:MapData) => {
+const Setting= () => {
+    const [_data, setData] = useState<any|null>({data:null,rad:null})
+     useEffect(()=> {
+    const fetchData = async () => {
+        const response = await getSettingData();
+        setData(response)
+        }
+        fetchData()
+        .catch(console.error);
+    }, [])
+    
+    const {data, rad} = _data
+    useEffect(()=> {
+        setRad(rad)
+    }, rad)
     const location = useLocationHook()
     const [confirm, setConfirm] = useState(false)
-    const {data, rad} = props
     const [_name, setName] = useState(data?.markPosition?.name)
     const [_lat, setLat] = useState<any | null>(data?.markPosition?.lat)
     const [_lng, setLng] = useState<any | null>(data?.markPosition?.lng)
-    const [_rad, setRad] = useState(rad.rad)
+    const [_rad, setRad] = useState(rad?.rad||0)
     const [mapCoord, setMapCoord] = useState({lat:0, lng:0})
     async function _handleSave() {
         await saveMarker(_lat,_lng, _name)
@@ -40,7 +53,7 @@ const Setting= (props:MapData) => {
     <main className="">
         <Navigate/>
         <div className='container mx-auto p-4'>
-        {location ? <Map setValue={_setCord} data={data} rad={rad} current={location} />:<Loading height={350}/>}
+        {location&&data&&rad ? <Map setValue={_setCord} data={data} rad={rad} current={location} />:<Loading height={350}/>}
         <section className='flex flex-col p-4 border-b-2 border-gray-600'>
                     <h3 className="text-center text-gray-500 p-4">Set Marker to be checkin</h3>
                     <Input onChange={(e: { target: { value: React.SetStateAction<string> } })=>setName(e.target.value)} value={_name} type="text" label="Name" placeholder="Central rama9" required/>
@@ -60,7 +73,7 @@ const Setting= (props:MapData) => {
 }
 
 
-export async function getStaticProps() {
+async function getSettingData() {
     const dbRef = ref(db);
     const _data = await get(child(dbRef, `mark/`))
     const _rad = await get(child(dbRef, `rad/`))
@@ -68,9 +81,7 @@ export async function getStaticProps() {
     const data = await _data.toJSON()
     const rad = await _rad.toJSON()
     return {
-      props: {
         data,rad
-      },
     }
   }
   
