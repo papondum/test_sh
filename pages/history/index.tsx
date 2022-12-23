@@ -40,7 +40,7 @@ export default function History(props:HistoryDatas) {
             <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">History checkin</h1>
             <div className="grid grid-cols-2 gap-4">
                 {data.map(item => (
-                <div onClick={()=>clickView(item)} key={item.date} className="flex flex-col gap-3 justify-center items-center block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <div onClick={()=>clickView(item)} key={item.date} className="flex flex-col gap-3 justify-center items-center block justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     {item.url&&<img
                         alt={item.name}
                         src={item.url}
@@ -56,7 +56,7 @@ export default function History(props:HistoryDatas) {
             </div>
         </section>
         {popup&&(<Modal onOk={()=>setPopup(false)}>
-            <div className="m-4 flex flex-col gap-3 justify-center items-center block max-w-sm p-6border border-gray-200 rounded-lg dark:border-gray-700 ">
+            <div className="m-4 flex flex-col gap-3 justify-center items-start block max-w-sm p-6border border-gray-200 rounded-lg dark:border-gray-700 ">
                 <div>Name: {selected?.name||'Untitled'}</div>
                 {selected?.url&&<img
                     alt={selected.name}
