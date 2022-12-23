@@ -9,10 +9,10 @@ export default function Navigate() {
 
         }
     },[router])
-    const styles="p-2 hover:bg-gray-50 dark:hover:bg-gray-700"
+    const styles="p-2 hover:bg-gray-50 hover:bg-gray-700"
     const activeStyle = 'border-b-2 border-solid'
     return (
-    <div className='top-0 z-40 flex-none w-full mx-auto bg-white border-b border-gray-200 dark:border-gray-600 dark:bg-gray-800 mb-8'>
+    <div className='top-0 z-40 flex-none w-full mx-auto bg-white border-b border-gray-200 border-gray-600 bg-gray-800 mb-8'>
         <div className='container mx-auto flex justify-between '>
             <div className="my-auto">Logo</div>
             <div className='max-w-[224px] w-full flex justify-between'>
