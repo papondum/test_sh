@@ -6,10 +6,10 @@ import { db } from '../components/Firebase'
 import Loading from '../components/Loading'
 import { ref, set, onValue, get, child } from "firebase/database";
 import useLocationHook from '../hooks'
+import { useEffect, useState } from 'react'
 
 export default function Home({data, rad}:MapData) {  
   const location = useLocationHook()
-  
   return (
     <>
       <Head>
