@@ -88,24 +88,24 @@ const MapMarkers = (props:MapMarkersData) => {
     const initialBounds = new google.maps.LatLngBounds();
     const plantedMarks: Array<google.maps.Marker> = dataMarks.map(mark => {
       const {lat, lng, name} = mark;
-      
+      let _lat = typeof lat !== 'number' ? parseFloat(lat): lat
+      let _lng = typeof lng !== 'number' ? parseFloat(lng): lng
       const markerOptions: google.maps.MarkerOptions = {
         map,
-        position: {lat, lng},
+        position: {lat:_lat, lng:_lng},
         title: name,
         clickable: true
       };
-
-      initialBounds.extend({lat, lng});
+      initialBounds.extend({lat:_lat, lng:_lng});
       const lastOutput = new google.maps.Marker(markerOptions);
       if(name!=='Current location') {
         const markInfoWindow = new google.maps.InfoWindow({
           content:`${name}`,
-          position: {lat, lng},
+          position: {lat:_lat, lng:_lng},
           });
           if(router.asPath!=='/setting') {
             google.maps.event.addListener(lastOutput, 'click', ()=> {
-              const isInArea = arePointsNear({lat, lng}, currentPos, parseFloat(userRadius.rad)/1000)
+              const isInArea = arePointsNear({lat:_lat, lng:_lng}, currentPos, parseFloat(userRadius.rad)/1000)
               if(isInArea) {
                 setSelectedValue({lat, lng, name})
                 openModal(true)
@@ -125,7 +125,7 @@ const MapMarkers = (props:MapMarkersData) => {
             fillOpacity: 0.35,
             map,
             center: {lat, lng},
-            radius:  parseFloat(userRadius.rad),
+            radius:  parseFloat(userRadius?.rad)||0,
           })
         }
         const currentInfoWindow = new google.maps.InfoWindow({

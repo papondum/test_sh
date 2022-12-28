@@ -7,11 +7,22 @@ import Loading from '../components/Loading'
 import { ref, set, onValue, get, child } from "firebase/database";
 import useLocationHook from '../hooks'
 import { useEffect, useState } from 'react'
-
+interface LocationData {
+  lat: number;
+  lng:number;
+}
 export default function Home() {  
-  const location = useLocationHook()
+  // const location = useLocationHook()
   const [_data, setData] = useState<any|null>({data:null, rad:null})
-
+  const [location, setLocation] = useState<LocationData|null>(null);
+  useEffect(() => {
+      if ('geolocation' in navigator) {                          
+        navigator.geolocation.getCurrentPosition(position => {
+          setLocation({lat: position.coords.latitude, lng: position.coords.longitude}) 
+        }, er => console.log(er)
+        )
+      }
+  },[])
   useEffect(()=> {
   const fetchData = async () => {
       const response = await getHomeData();
@@ -20,6 +31,7 @@ export default function Home() {
       fetchData()
       .catch(console.error);
   }, [])
+  
   const {data, rad} = _data
   return (
     <>

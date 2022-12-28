@@ -60,7 +60,7 @@ export async function getImgUrl(date:number) {
         const response = await getDownloadURL(ref(storage, `images/${date}`))
         return response 
     } catch (e) {
-        console.error(e);
+        console.error('RES:',e);
     }
     return
 }
